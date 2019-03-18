@@ -1,6 +1,9 @@
 from crowdfunder.models import Profile, Project, Reward, Donation
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from crowdfunder.forms import LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 
 def root(request):
     return HttpResponseRedirect('/projects/')
