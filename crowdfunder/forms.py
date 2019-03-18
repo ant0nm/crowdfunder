@@ -1,9 +1,11 @@
 import datetime as dt
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, Form, CharField, DateField, PasswordInput, EmailField, DateInput
+from django.core.validators import MinValueValidator
+from django.forms import ModelForm, Form, CharField, DateField, PasswordInput, EmailField, DateInput, IntegerField
 from crowdfunder.models import Profile, Project, Reward, Donation
 from django import forms
 
+min_zero = MinValueValidator(limit_value=1)
 
 class LoginForm(Form):
     username = CharField(label="User Name", max_length=64)
@@ -23,6 +25,7 @@ class ProfileForm(ModelForm):
 class ProjectForm(ModelForm):
     funding_start_date = DateField(widget=DateInput(attrs={'type': 'date', 'min': dt.date.today() }))
     funding_end_date = DateField(widget=DateInput(attrs={'type': 'date', 'min': dt.date.today() }))
+    goal = IntegerField(validators=[min_zero])
 
     class Meta:
         model = Project
