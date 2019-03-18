@@ -1,4 +1,5 @@
 from crowdfunder.models import Profile, Project, Reward, Donation
+from crowdfunder.forms import ProjectForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -29,13 +30,22 @@ def signup(request):
     return HttpResponse(html_response)
 
 def project_page(request):
-    pass
+    context = {'projects': Project.objects.all()}
+    return render(request, 'projects.html', context)
 
 def show_project(request, project_id):
     pass
 
 def create_project(request):
-    pass
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        project = form.instance
+        project.owner = request.user
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProjectForm()
+    return render(request, 'create_project.html', {'form': form})
 
 def profile(request):
     pass
