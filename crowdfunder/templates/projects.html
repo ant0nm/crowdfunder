@@ -3,7 +3,11 @@
 <h1>Projects</h1>
 <ul>
   {% for project in projects %}
-  <li>{{ project.name }}</li>
+  <li>
+    <a href="{% url 'show_project' project_id=project.id %}">{{ project.name }}</a>
+    <p>{{ project.description }}</p>
+    <p>Funding goal: {{ project.goal }}</p>
+  </li>
   {% endfor %}
 </ul>
 {% endblock %}
