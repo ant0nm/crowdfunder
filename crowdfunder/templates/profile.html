@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if user.is_authenticated %}
+{{title}}
+{{profile.first_name}}
+{% else %}
 <form method="post" action="{% url 'profile_create' %}">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Submit">
 </form>
-
+{% endif %}
 {% endblock %}

@@ -52,7 +52,7 @@ def create_project(request):
     return render(request, 'create_project.html', {'form': form})
 
 def profile(request):
-    context = {'title': 'Profile'}
+    context = {'title': 'Profile', 'profile': Profile.objects.get(pk=request.user.pk)}
     if not Profile.exists_for_user(request.user):
         form = ProfileForm()
         context['form'] = form
@@ -63,7 +63,7 @@ def profile_create(request):
     form.instance.user = request.user
     if form.is_valid():
         form.save()
-        return redirect(reverse('user_profile'))
+        return HttpResponseRedirect('/profile/')
     else:
         context = {'title': 'Profile', 'form': form}
         return render(request, 'profile.html', context)
