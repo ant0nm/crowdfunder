@@ -4,7 +4,7 @@
 <p>{{ project.description }}</p>
 <p>Funding Start Date: {{project.funding_start_date}}</p>
 <p>Funding End Date: {{project.funding_end_date}}</p>
-<p>Funding Goal: {{ project.goal }}</p>
+<p>Total funding: ${{ project.total_funds }} of ${{ project.goal }}</p>
 <p>Owner: {{ project.owner.profile.first_name }}</p>
 {% if request.user == project.owner %}
 <a href="{% url 'reward_create' project_id=project.id %}">Add a reward</a>
@@ -19,4 +19,17 @@
   </li>
   {% endfor %}
 </ul>
+<form action="{% url 'donate' %}" method="post">
+  {% csrf_token %}
+  <select name="chosen_reward">
+    {% for reward in rewards %}
+     {% ifequal reward.id selected_reward.id %}
+         <option value="{{reward.pk}}" selected="selected">reward: {{reward.name}} ${{reward.value}}</option>
+     {% else %}
+         <option value="{{reward.pk}}">reward: {{reward.name}} ${{reward.value}}</option>
+     {% endifequal %}
+    {% endfor %}
+  </select>
+  <input type="submit" value="Donate">
+</form>
 {% endblock %}

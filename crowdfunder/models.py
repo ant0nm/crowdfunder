@@ -23,6 +23,11 @@ class Project(models.Model):
     funding_end_date = models.DateField()
     goal = models.IntegerField()
 
+    def total_funds(self):
+        total = 0
+        for reward in self.rewards.all():
+            total += reward.number_donated() * reward.value
+        return total
 
 class Reward(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rewards")
@@ -30,7 +35,10 @@ class Reward(models.Model):
     description = models.CharField(max_length=255)
     value = models.IntegerField()
 
+    def number_donated(self):
+        return self.donations.count()
+
 
 class Donation(models.Model):
-    user = models.ForeignKey(User, related_name='doantions', on_delete=models.CASCADE)
-    reward = models.ForeignKey(Project, related_name='reward', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, related_name='donations', on_delete=models.CASCADE)

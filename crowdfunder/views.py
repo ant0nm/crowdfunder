@@ -115,3 +115,10 @@ def reward_create(request, project_id):
         form = RewardForm()
     context = {'project': project, 'form': form}
     return render(request, 'create_reward.html', context)
+
+def donate(request):
+    reward_id = int(request.POST['chosen_reward'])
+    reward = Reward.objects.get(pk=reward_id)
+    new_donation = Donation.objects.create(user=request.user, reward=reward)
+    project = reward.project
+    return HttpResponseRedirect(reverse('show_project', args=[project.pk]))

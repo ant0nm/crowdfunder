@@ -29,4 +29,5 @@ urlpatterns = [
     path('profile/', views.profile, name="user_profile"),
     path('profile/create', views.profile_create, name="profile_create"),
     path('projects/<int:project_id>/rewards/create', views.reward_create, name="reward_create"),
+    path('projects/donation', views.donate, name="donate"),
 ]
