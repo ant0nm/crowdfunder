@@ -22,7 +22,7 @@ def login_view(request):
             user = authenticate(username=username, password=pw)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect('/home/')
+                return HttpResponseRedirect('/')
             else:
                 form.add_error('username', 'Login failed')
     else:
