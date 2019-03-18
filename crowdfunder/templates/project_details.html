@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ project.name }}</h2>
+<p>{{ project.description }}</p>
+<p>Funding Start Date: {{project.funding_start_date}}</p>
+<p>Funding End Date: {{project.funding_end_date}}</p>
+<p>Funding Goal: {{ project.goal }}</p>
+<p>Owner: {{ project.owner.profile.first_name }}</p>
+{% if request.user == project.owner %}
+<a href="{% url 'reward_create' project_id=project.id %}">Add a reward</a>
+{% endif %}
+<h3>Rewards</h3>
+<ul>
+  {% for reward in rewards %}
+  <li>
+    <h4>{{ reward.name }}</h4>
+    <p>Description: {{ reward.description }}</p>
+    <p>Value: {{ reward.value }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
