@@ -23,3 +23,8 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = ['name', 'description', 'funding_start_date', 'funding_end_date', 'goal']
+
+class RewardForm(ModelForm):
+    class Meta:
+        model = Reward
+        fields = ['name', 'description', 'value']
