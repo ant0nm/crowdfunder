@@ -26,7 +26,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('profile/')
+            return HttpResponseRedirect('/profile/')
     else:
         form = UserCreationForm()
     html_response = render(request, 'signup.html', {'form': form})
@@ -46,6 +46,7 @@ def create_project(request):
         project.owner = request.user
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect('/')
     else:
         form = ProjectForm()
     return render(request, 'create_project.html', {'form': form})
