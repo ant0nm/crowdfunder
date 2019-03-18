@@ -1,7 +1,7 @@
 from crowdfunder.models import Profile, Project, Reward, Donation
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from crowdfunder.forms import LoginForm
+from crowdfunder.forms import LoginForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
@@ -25,7 +25,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/projects/')
+            return HttpResponseRedirect('profile/')
     else:
         form = UserCreationForm()
     html_response = render(request, 'signup.html', {'form': form})
@@ -41,7 +41,18 @@ def create_project(request):
     pass
 
 def profile(request):
-    pass
+    context = {'title': 'Profile'}
+    if not Profile.exists_for_user(request.user):
+        form = ProfileForm()
+        context['form'] = form
+    return render(request, 'profile.html', context)
 
 def profile_create(request):
-    pass
+    form = ProfileForm(request.POST)
+    form.instance.user = request.user
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('user_profile'))
+    else:
+        context = {'title': 'Profile', 'form': form}
+        return render(request, 'profile.html', context)

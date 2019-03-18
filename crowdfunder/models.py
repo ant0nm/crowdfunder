@@ -10,6 +10,10 @@ class Profile(models.Model):
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
+    @classmethod
+    def exists_for_user(self, user):
+        return Profile.objects.filter(user_id=user.id).exists()
+
 
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name= "projects_owned")
