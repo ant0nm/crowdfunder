@@ -46,7 +46,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('user_profile'))
     else:
         form = UserCreationForm()
     html_response = render(request, 'signup.html', {'form': form})
@@ -75,13 +75,16 @@ def create_project(request):
         form = ProjectForm()
     return render(request, 'create_project.html', {'form': form})
 
-def profile(request, id):
-    profile = Profile.objects.get(pk=id)
-    # import ipdb; ipdb.set_trace()
-    context = {'title': 'Profile', 'profile': profile, 'first_name': profile.first_name}
+def profile(request):
+    context = {'title': 'Profile'}
     if not Profile.exists_for_user(request.user):
         form = ProfileForm()
         context['form'] = form
+    else:
+        profile = request.user.profile
+        # import ipdb; ipdb.set_trace()
+        context['profile'] = profile
+        context['first_name'] = profile.first_name
     return render(request, 'profile.html', context)
 
     # context = {'profile': profile}
@@ -90,12 +93,11 @@ def profile(request, id):
 
 def profile_create(request):
     user = request.user
-    id = user.profile.id
     form = ProfileForm(request.POST)
     form.instance.user = request.user
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/profile/' + str(id))
+        return HttpResponseRedirect('/profile/')
     else:
         context = {'title': 'Profile', 'form': form}
         return render(request, 'profile.html', context)
