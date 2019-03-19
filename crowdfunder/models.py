@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from datetime import date
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -14,13 +16,20 @@ class Profile(models.Model):
     def exists_for_user(self, user):
         return Profile.objects.filter(user_id=user.id).exists()
 
+    def has_backed(self):
+        user_projects = []
+        for donation in self.user.donations.all():
+            reward = donation.reward
+            if reward.project not in user_projects:
+                user_projects.append(reward.project)
+        return user_projects
+
     def total_donations(self):
         total = 0
         donations = self.user.donations.all()
         for donation in donations:
             total += donation.reward.value
         return total
-
 
 
 class Project(models.Model):
@@ -36,6 +45,27 @@ class Project(models.Model):
         for reward in self.rewards.all():
             total += reward.number_donated() * reward.value
         return total
+
+    def fully_funded(self):
+        if self.total_funds() >= self.goal:
+            return True
+        else:
+            return False
+
+    def expired(self):
+        return date.today() > self.funding_end_date
+
+    def status(self):
+        if self.expired():
+            if self.fully_funded():
+                return "The project has already expired, but it has met its funding goal."
+            else:
+                return "The project has already expired, however it has not met its funding goal."
+        else:
+            if self.fully_funded():
+                return "The project is still open, and it's already met its funding goal!"
+            else:
+                return "The project is still open, however it has not met its funding goal yet."
 
 class Reward(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rewards")
