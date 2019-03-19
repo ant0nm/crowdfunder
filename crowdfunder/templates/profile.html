@@ -14,11 +14,13 @@
 {{first_name}}
 {%endif%}
 
+<h2>Projects Backed</h2>
+<ul>
+  {% for donation in request.user.donations.all %}
+  <li>{{ donation.reward.project.name }}</li>
+  {%endfor%}
+</ul>
 
-{% for donation in request.user.donations.all %}
-{{ donation.reward.project.name }}
-{%endfor%}
-
-{{ profile.total_donations }}
+<h3>Total Donations Made: ${{ profile.total_donations }}</h3>
 
 {%endblock%}
