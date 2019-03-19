@@ -67,6 +67,10 @@ class Project(models.Model):
             else:
                 return "The project is still open, however it has not met its funding goal yet."
 
+    def funding_deadline(self):
+        time_remaining = (self.funding_end_date - date.today())
+        return time_remaining.days
+
 class Reward(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rewards")
     name = models.CharField(max_length=255)
