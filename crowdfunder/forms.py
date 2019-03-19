@@ -5,7 +5,7 @@ from django.forms import ModelForm, Form, CharField, DateField, PasswordInput, E
 from crowdfunder.models import Profile, Project, Reward, Donation
 from django import forms
 
-min_zero = MinValueValidator(limit_value=1)
+min_one = MinValueValidator(limit_value=1)
 
 class LoginForm(Form):
     username = CharField(label="User Name", max_length=64)
@@ -25,12 +25,12 @@ class ProfileForm(ModelForm):
 class ProjectForm(ModelForm):
     funding_start_date = DateField(widget=DateInput(attrs={'type': 'date', 'min': dt.date.today() }))
     funding_end_date = DateField(widget=DateInput(attrs={'type': 'date', 'min': dt.date.today() }))
-    goal = IntegerField(validators=[min_zero])
+    goal = IntegerField(validators=[min_one])
 
     class Meta:
         model = Project
         fields = ['name', 'description', 'funding_start_date', 'funding_end_date', 'goal']
-    
+
     def clean_start_date(self):
         cleaned_date = self.cleaned_data['funding_start_date']
         if cleaned_date < dt.date.today():
@@ -41,8 +41,9 @@ class ProjectForm(ModelForm):
         cleaned_end_date = self.cleaned_data['funding_end_date']
         if cleaned_start_date > cleaned_end_date:
             self.add_error('End date must be after start date.')
-     
+
 class RewardForm(ModelForm):
+    max_donations = IntegerField(validators=[min_one])
     class Meta:
         model = Reward
-        fields = ['name', 'description', 'value']
+        fields = ['name', 'description', 'value', 'max_donations']

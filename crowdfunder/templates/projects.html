@@ -7,6 +7,9 @@
     <a href="{% url 'show_project' project_id=project.id %}">{{ project.name }}</a>
     <p>{{ project.description }}</p>
     <p>Funding goal: {{ project.goal }}</p>
+    {% if project in request.user.profile.has_backed %}
+    <p>{{request.user.profile.first_name}}, you have backed this project</p>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>

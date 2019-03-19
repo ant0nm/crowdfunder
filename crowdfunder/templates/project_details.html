@@ -11,17 +11,23 @@
 <a href="{% url 'reward_create' project_id=project.id %}">Add a reward</a>
 {% endif %}
 <h3>Rewards</h3>
+{% if rewards %}
 <ul>
   {% for reward in rewards %}
   <li>
     <h4>{{ reward.name }}</h4>
     <p>Description: {{ reward.description }}</p>
     <p>Value: {{ reward.value }}</p>
+    <p>Donations made: {{ reward.donations.all.count }}</p>
+    <p>Rewards left: {{ reward.rewards_left }}</p>
   </li>
   {% endfor %}
 </ul>
+{% else %}
+<p>No rewards yet.</p>
+{% endif %}
 
-{% if request.user != project.owner %}
+{% if request.user != project.owner and project.rewards.count != 0 %}
   <form action="{% url 'donate' %}" method="post">
     {% csrf_token %}
     <select name="chosen_reward">
@@ -35,6 +41,14 @@
     </select>
     <input type="submit" value="Donate">
   </form>
+{% endif %}
+
+{% if messages %}
+<ul>
+  {% for message in messages %}
+    <li>{{ message }}</li>
+  {% endfor %}
+</ul>
 {% endif %}
 
 {% if project in request.user.profile.has_backed %}
