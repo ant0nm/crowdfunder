@@ -5,7 +5,7 @@
     <title>Crowdfunder</title>
   </head>
   <header>
-    <h1>Crowd Funder</h1>
+    <a href="{% url 'project_page' %}"><h1>Crowd Funder</h1></a>
     <h2>A Place for Crowds to Fund</h2>
     <nav>
       {% if request.user.is_authenticated %}

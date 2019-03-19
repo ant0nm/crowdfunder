@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
@@ -14,13 +15,20 @@ class Profile(models.Model):
     def exists_for_user(self, user):
         return Profile.objects.filter(user_id=user.id).exists()
 
+    def has_backed(self):
+        user_projects = []
+        for donation in self.user.donations.all():
+            reward = donation.reward
+            if reward.project not in user_projects:
+                user_projects.append(reward.project)
+        return user_projects
+
     def total_donations(self):
         total = 0
         donations = self.user.donations.all()
         for donation in donations:
             total += donation.reward.value
         return total
-
 
 
 class Project(models.Model):
