@@ -42,3 +42,12 @@ class Reward(models.Model):
 class Donation(models.Model):
     user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
     reward = models.ForeignKey(Reward, related_name='donations', on_delete=models.CASCADE)
+
+    def has_backed(self):
+        for donation in self.donations.all():
+            print(donation)
+        # if self.donations.count() > 0:
+        #     backed = True
+        # else:
+        #     backed = False
+        # return backed
