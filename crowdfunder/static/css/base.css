@@ -8,22 +8,33 @@ body {
   font-weight: 400;
   font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #555;
+}
 
- }
 
 
  a {
    text-decoration: none;
    display: block;
    padding: 6px;
-   background-color: #dddddd;
+
  }
 
+a:link {
+  color: #7e2c24
+}
+
+a:visited {
+  color: #1a7c7e;
+}
+
  a:hover {
-     color: #3d4c45;
+
      text-decoration: underline;
    }
 
+  a:active {
+    color: #7f3c97
+  }
 ul {
   list-style-type: none;
   margin: 0;
@@ -33,6 +44,11 @@ ul {
   float: left;
 }
 
+.projects li {
+  column-count: 3;
+  column-rule-style: double;
+  column-fill: auto;
+}
 /* a {
   display: block;
   padding: 8px;

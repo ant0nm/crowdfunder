@@ -1,21 +1,19 @@
-.site-header {
-  color: grey;
-  border-top: solid grey 2px;
-  border-bottom: solid grey 2px;
-  font-size: 20px;
-  width: 100%;
-  margin-bottom: 10px;
-}
 
 
 
 body {
-  background: #e0e3f0;
+   background-image: url("https://cdn.lifehack.org/wp-content/uploads/2013/04/95.jpg"); /* The image used */
+   background-color: #e0e03f0; /* Used if the image is unavailable */
+   height: 500px; /* You must set a specified height */
+   background-position: center; /* Center the image */
+   background-repeat: no-repeat; /* Do not repeat the image */
+   background-size: cover; /* Resize the background image to cover the entire container */
+   background-attachment: fixed;
 }
 
-/* CSS for profile.html */
 
-.picture-list {
+
+@media
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
@@ -24,7 +22,7 @@ body {
 /* Tablet view */
 
 @media (min-width : 600px) and (max-width : 768px) {
-  .picture-list {
+   {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
