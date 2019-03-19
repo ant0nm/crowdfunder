@@ -14,9 +14,11 @@
         <li> <a href="{% url 'create_project'%}">New Project</a></li>
         <li> <a href="{% url 'user_profile' %}">Profile</a></li>
         <li> <a href="{% url 'logout'%}">Logout</a></li>
+        <li> <a href="{% url 'categories_list' %}">Categories</a> </li>
         {% else %}
         <li> <a href="{% url 'signup'%}">Sign up</a></li>
         <li> <a href="{%url 'login'%}">Login</a></li>
+        <li> <a href="{% url 'categories_list' %}">Categories</a> </li>
         {%endif%}
       </ul>
       </nav class=nav>

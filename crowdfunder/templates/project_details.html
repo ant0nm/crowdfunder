@@ -28,7 +28,7 @@
 <p>No rewards yet.</p>
 {% endif %}
 
-{% if request.user != project.owner and project.rewards.count != 0 %}
+{% if request.user != project.owner and project.rewards.count != 0 and request.user.is_authenticated %}
   <form action="{% url 'donate' %}" method="post">
     {% csrf_token %}
     <select name="chosen_reward">

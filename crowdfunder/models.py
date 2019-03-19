@@ -31,6 +31,11 @@ class Profile(models.Model):
             total += donation.reward.value
         return total
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name= "projects_owned")
@@ -39,6 +44,10 @@ class Project(models.Model):
     funding_start_date = models.DateField()
     funding_end_date = models.DateField()
     goal = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="projects")
+
+    def __str__(self):
+        return self.name
 
     def total_funds(self):
         total = 0
@@ -77,6 +86,9 @@ class Reward(models.Model):
     description = models.CharField(max_length=255)
     value = models.IntegerField()
     max_donations = models.IntegerField()
+
+    def __str__(self):
+        return self.name
 
     def number_donated(self):
         return self.donations.count()

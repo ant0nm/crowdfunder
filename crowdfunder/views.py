@@ -1,8 +1,9 @@
-from crowdfunder.models import Profile, Project, Reward, Donation
+from crowdfunder.models import Profile, Project, Reward, Donation, Category
 from crowdfunder.forms import ProjectForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from crowdfunder.forms import LoginForm, ProfileForm, RewardForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -127,6 +128,7 @@ def reward_create(request, project_id):
     context = {'project': project, 'form': form}
     return render(request, 'create_reward.html', context)
 
+@login_required
 def donate(request):
     if not bool(request.POST):
         raise Http404("If you are the project's owner, you cannot donate to this project. If you are not the owner, please select a reward and donate.")
@@ -143,3 +145,15 @@ def donate(request):
         else:
             messages.add_message(request, messages.INFO, 'No more {} left :( Pick a different reward!'.format(reward.name))
             return HttpResponseRedirect(reverse('show_project', args=[project.pk]))
+
+def categories_list(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    html_response = render(request, 'categories.html', context)
+    return HttpResponse(html_response)
+
+def category_show(request, category_id):
+    category = Category.objects.get(pk=category_id)
+    context = {'category': category}
+    html_response = render(request, 'category.html', context)
+    return HttpResponse(html_response)
