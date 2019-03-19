@@ -2,11 +2,19 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+  {% load staticfiles %}
+  <!-- CSS CUSTOM -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
     <title>Crowdfunder</title>
   </head>
   <header>
+
     <h1>Crowd Funder</h1>
     <h2>A Place for Crowds to Fund</h2>
+
     <nav>
       {% if request.user.is_authenticated %}
       <a href="{% url 'logout'%}">Logout</a>
