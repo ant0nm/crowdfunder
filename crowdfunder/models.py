@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+import pdb
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -13,6 +15,14 @@ class Profile(models.Model):
     @classmethod
     def exists_for_user(self, user):
         return Profile.objects.filter(user_id=user.id).exists()
+
+    def has_backed(self):
+        user_projects = []
+        for donation in self.user.donations.all():
+            reward = donation.reward
+            if reward.project not in user_projects:
+                user_projects.append(reward.project)
+        return user_projects
 
 
 class Project(models.Model):
@@ -42,12 +52,3 @@ class Reward(models.Model):
 class Donation(models.Model):
     user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
     reward = models.ForeignKey(Reward, related_name='donations', on_delete=models.CASCADE)
-
-    def has_backed(self):
-        for donation in self.donations.all():
-            print(donation)
-        # if self.donations.count() > 0:
-        #     backed = True
-        # else:
-        #     backed = False
-        # return backed

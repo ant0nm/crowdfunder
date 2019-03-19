@@ -33,7 +33,7 @@
   <input type="submit" value="Donate">
 </form>
 
-{% if request.user.has_backed %}
-<p>{{ user.profile.first_name }}, you have backed this project</p>
+{% if project in request.user.profile.has_backed %}
+<p>{{request.user.profile.first_name}}, you have backed this project</p>
 {% endif %}
 {% endblock %}
