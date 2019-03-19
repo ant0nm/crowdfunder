@@ -12,6 +12,15 @@
 {% else %}
 {{title}}
 {{first_name}}
-hello
 {%endif%}
+
+<h2>Projects Backed</h2>
+<ul>
+  {% for donation in request.user.donations.all %}
+  <li>{{ donation.reward.project.name }}</li>
+  {%endfor%}
+</ul>
+
+<h3>Total Donations Made: ${{ profile.total_donations }}</h3>
+
 {%endblock%}

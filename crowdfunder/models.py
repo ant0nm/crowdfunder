@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-import pdb
 
 
 class Profile(models.Model):
@@ -23,6 +22,13 @@ class Profile(models.Model):
             if reward.project not in user_projects:
                 user_projects.append(reward.project)
         return user_projects
+
+    def total_donations(self):
+        total = 0
+        donations = self.user.donations.all()
+        for donation in donations:
+            total += donation.reward.value
+        return total
 
 
 class Project(models.Model):
