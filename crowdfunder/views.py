@@ -92,6 +92,16 @@ def profile(request):
     # response = render(request, 'profile.html', context)
     # return HttpResponse(response)
 
+
+def profile_viewer(request, id):
+    profile = Profile.objects.get(pk=id)
+    context = {'title': 'Profile', 'profile': profile}
+    if not Profile.exists_for_user(request.user):
+        form = ProfileForm()
+        context['form'] = form
+    return render(request, 'profile.html', context)
+
+
 def profile_create(request):
     user = request.user
     form = ProfileForm(request.POST)

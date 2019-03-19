@@ -9,18 +9,41 @@
   {{ form.as_p }}
   <input type="submit" value="Submit">
 </form>
-{% else %}
-{{title}}
-{{first_name}}
 {%endif%}
 
-<h2>Projects Backed</h2>
+{% if request.user == profile.user %}
+{{title}}
+{{profile.first_name}}
+<h2>Projects</h2>
 <ul>
+  {% for project in request.user.projects_owned.all %}
+  <li>{{project.name}}</li>
+  {%endfor%}
+</ul>
+<h2>Rewards</h2>
+<dl>
   {% for donation in request.user.donations.all %}
-  <li>{{ donation.reward.project.name }}</li>
+  <dt>Project name: {{donation.reward.project.name}}</dt>
+  <dd>reward: {{ donation.reward.name }}</dd>
+  {%endfor%}
+</dl>
+{%else%}
+{{profile.first_name}}
+<h2>Projects</h2>
+<ul>
+  {% for project in profile.user.projects_owned.all %}
+  <li>{{project.name}}</li>
   {%endfor%}
 </ul>
 
-<h3>Total Donations Made: ${{ profile.total_donations }}</h3>
+<dl>
+  {% for donation in profile.user.donations.all %}
+  <dt>Project name: {{donation.reward.project.name}}</dt>
+  <dd>reward: {{ donation.reward.name }}</dd>
+  {%endfor%}
+</dl>
+{%endif%}
+
+<h3>Total Donations Made on Crowdfunder: ${{ profile.total_donations }}</h3>
 
 {%endblock%}

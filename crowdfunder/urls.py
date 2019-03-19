@@ -30,4 +30,5 @@ urlpatterns = [
     path('profile/create', views.profile_create, name="profile_create"),
     path('projects/<int:project_id>/rewards/create', views.reward_create, name="reward_create"),
     path('projects/donation', views.donate, name="donate"),
+    path('view/profile/<int:id>', views.profile_viewer, name="profile"),
 ]
