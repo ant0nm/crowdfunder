@@ -20,6 +20,7 @@
   </li>
   {% endfor %}
 </ul>
+
 {% if request.user != project.owner %}
   <form action="{% url 'donate' %}" method="post">
     {% csrf_token %}
@@ -34,5 +35,9 @@
     </select>
     <input type="submit" value="Donate">
   </form>
+{% endif %}
+
+{% if project in request.user.profile.has_backed %}
+<p>{{request.user.profile.first_name}}, you have backed this project</p>
 {% endif %}
 {% endblock %}
