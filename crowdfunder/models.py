@@ -14,6 +14,14 @@ class Profile(models.Model):
     def exists_for_user(self, user):
         return Profile.objects.filter(user_id=user.id).exists()
 
+    def total_donations(self):
+        total = 0
+        donations = self.user.donations.all()
+        for donation in donations:
+            total += donation.reward.value
+        return total
+
+
 
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name= "projects_owned")
