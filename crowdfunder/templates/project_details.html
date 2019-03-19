@@ -7,7 +7,7 @@
 <p>Time Remaining: {{project.funding_deadline}} day(s)</p>
 <p>Total funding: ${{ project.total_funds }} of ${{ project.goal }}</p>
 <p>Status: {{project.status}}</p>
-<p>Owner: {{ project.owner.profile.first_name }}</p>
+<p>Owner: <a href="{% url 'profile_viewer' id=project.owner.profile.pk %}">{{ project.owner.profile.first_name }}</a></p>
 {% if request.user == project.owner %}
 <a href="{% url 'reward_create' project_id=project.id %}">Add a reward</a>
 {% endif %}
