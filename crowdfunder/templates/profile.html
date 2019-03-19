@@ -13,14 +13,20 @@
 {{title}}
 {{first_name}}
 {%endif%}
-
-<h2>Projects Backed</h2>
+<h2>Projects</h2>
 <ul>
-  {% for donation in request.user.donations.all %}
-  <li>{{ donation.reward.project.name }}</li>
+  {% for project in request.user.projects_owned.all %}
+  <li>{{project.name}}</li>
   {%endfor%}
 </ul>
+<h2>Rewards</h2>
+<dl>
+  {% for donation in request.user.donations.all %}
+  <dt>Project name: {{donation.reward.project.name}}</dt>
+  <dd>reward: {{ donation.reward.name }}</dd>
+  {%endfor%}
+</dl>
 
-<h3>Total Donations Made: ${{ profile.total_donations }}</h3>
+<h3>Total Donations Made on Crowdfunder: ${{ profile.total_donations }}</h3>
 
 {%endblock%}
