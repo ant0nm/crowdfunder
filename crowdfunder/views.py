@@ -1,8 +1,9 @@
 from crowdfunder.models import Profile, Project, Reward, Donation
 from crowdfunder.forms import ProjectForm
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from crowdfunder.forms import LoginForm, ProfileForm, RewardForm
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -117,8 +118,14 @@ def reward_create(request, project_id):
     return render(request, 'create_reward.html', context)
 
 def donate(request):
-    reward_id = int(request.POST['chosen_reward'])
-    reward = Reward.objects.get(pk=reward_id)
-    new_donation = Donation.objects.create(user=request.user, reward=reward)
-    project = reward.project
-    return HttpResponseRedirect(reverse('show_project', args=[project.pk]))
+    if not bool(request.POST):
+        raise Http404("If you are the project's owner, you cannot donate to this project. If you are not the owner, please select a reward and donate.")
+    else:
+        reward_id = int(request.POST['chosen_reward'])
+        reward = Reward.objects.get(pk=reward_id)
+        project = reward.project
+        if project.owner != request.user:
+            new_donation = Donation.objects.create(user=request.user, reward=reward)
+            return HttpResponseRedirect(reverse('show_project', args=[project.pk]))
+        else:
+            raise Http404("You are the owner, so you cannot donate to this project!")

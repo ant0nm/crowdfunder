@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from datetime import date
 
 
 class Profile(models.Model):
@@ -44,6 +45,27 @@ class Project(models.Model):
         for reward in self.rewards.all():
             total += reward.number_donated() * reward.value
         return total
+
+    def fully_funded(self):
+        if self.total_funds() >= self.goal:
+            return True
+        else:
+            return False
+
+    def expired(self):
+        return date.today() > self.funding_end_date
+
+    def status(self):
+        if self.expired():
+            if self.fully_funded():
+                return "The project has already expired, but it has met its funding goal."
+            else:
+                return "The project has already expired, however it has not met its funding goal."
+        else:
+            if self.fully_funded():
+                return "The project is still open, and it's already met its funding goal!"
+            else:
+                return "The project is still open, however it has not met its funding goal yet."
 
 class Reward(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rewards")
