@@ -1,0 +1,80 @@
+/* html is set to 62.5% so that all the REM measurements throughout Skeleton
+are based on 10px sizing. So basically 1.5rem = 15px :) */
+html {
+  font-size: 62.5%; }
+body {
+  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #555;
+}
+
+
+
+ a {
+   text-decoration: none;
+   display: block;
+   padding: 6px;
+
+ }
+
+a:link {
+  color: #7e2c24
+}
+
+a:visited {
+  color: #1a7c7e;
+}
+
+ a:hover {
+
+     text-decoration: underline;
+   }
+
+  a:active {
+    color: #7f3c97
+  }
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.nav li {
+  float: left;
+}
+
+.projects li {
+  column-count: 3;
+  column-rule-style: double;
+  column-fill: auto;
+}
+/* a {
+  display: block;
+  padding: 8px;
+  background-color: #dddddd;
+} */
+
+header {
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  header h1 {
+    font-size: 4em;
+  }
+
+
+
+  h1 {
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    align-items: center;
+    justify-content: center;
+  }
