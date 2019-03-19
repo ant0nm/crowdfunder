@@ -92,6 +92,16 @@ def profile(request):
     # response = render(request, 'profile.html', context)
     # return HttpResponse(response)
 
+
+def profile_viewer(request, id):
+    profile = Profile.objects.get(pk=id)
+    context = {'title': 'Profile', 'profile': profile}
+    if not Profile.exists_for_user(request.user):
+        form = ProfileForm()
+        context['form'] = form
+    return render(request, 'profile.html', context)
+
+
 def profile_create(request):
     user = request.user
     form = ProfileForm(request.POST)
@@ -124,8 +134,12 @@ def donate(request):
         reward_id = int(request.POST['chosen_reward'])
         reward = Reward.objects.get(pk=reward_id)
         project = reward.project
-        if project.owner != request.user:
-            new_donation = Donation.objects.create(user=request.user, reward=reward)
-            return HttpResponseRedirect(reverse('show_project', args=[project.pk]))
+        if reward.within_limit():
+            if project.owner != request.user:
+                new_donation = Donation.objects.create(user=request.user, reward=reward)
+                return HttpResponseRedirect(reverse('show_project', args=[project.pk]))
+            else:
+                raise Http404("You are the owner, so you cannot donate to this project!")
         else:
-            raise Http404("You are the owner, so you cannot donate to this project!")
+            messages.add_message(request, messages.INFO, 'No more {} left :( Pick a different reward!'.format(reward.name))
+            return HttpResponseRedirect(reverse('show_project', args=[project.pk]))

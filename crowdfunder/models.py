@@ -76,10 +76,17 @@ class Reward(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     value = models.IntegerField()
+    max_donations = models.IntegerField()
 
     def number_donated(self):
         return self.donations.count()
 
+    def within_limit(self):
+        num_of_donations = self.number_donated()
+        return num_of_donations < self.max_donations
+
+    def rewards_left(self):
+        return self.max_donations - self.number_donated()
 
 class Donation(models.Model):
     user = models.ForeignKey(User, related_name='donations', on_delete=models.CASCADE)
