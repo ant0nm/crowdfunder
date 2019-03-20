@@ -37,6 +37,12 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Tag(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name= "projects_owned")
     name = models.CharField(max_length=255)
@@ -45,6 +51,7 @@ class Project(models.Model):
     funding_end_date = models.DateField()
     goal = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="projects")
+    tags = models.ManyToManyField(Tag, through='Tagging', related_name='projects')
 
     def __str__(self):
         return self.name
@@ -79,6 +86,10 @@ class Project(models.Model):
     def funding_deadline(self):
         time_remaining = (self.funding_end_date - date.today())
         return time_remaining.days
+
+class Tagging(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="taggings")
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="taggings")
 
 class Reward(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rewards")

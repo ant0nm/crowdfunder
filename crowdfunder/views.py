@@ -1,4 +1,4 @@
-from crowdfunder.models import Profile, Project, Reward, Donation, Category
+from crowdfunder.models import Profile, Project, Reward, Donation, Category, Tag, Tagging
 from crowdfunder.forms import ProjectForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -156,4 +156,16 @@ def category_show(request, category_id):
     category = Category.objects.get(pk=category_id)
     context = {'category': category}
     html_response = render(request, 'category.html', context)
+    return HttpResponse(html_response)
+
+def tags_list(request):
+    tags = Tag.objects.all()
+    context = {'tags': tags}
+    html_response = render(request, 'tags.html', context)
+    return HttpResponse(html_response)
+
+def tag_show(request, tag_id):
+    tag = Tag.objects.get(pk=tag_id)
+    context = {"tag": tag}
+    html_response = render(request, 'tag.html', context)
     return HttpResponse(html_response)
