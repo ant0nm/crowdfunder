@@ -33,4 +33,6 @@ urlpatterns = [
     path('view/profile/<int:id>', views.profile_viewer, name="profile_viewer"),
     path('categories/', views.categories_list, name='categories_list'),
     path('category/<int:category_id>/', views.category_show, name='category_show'),
+    path('tags/', views.tags_list, name="tags_list"),
+    path('tag/<int:tag_id>', views.tag_show, name='tag_show'),
 ]

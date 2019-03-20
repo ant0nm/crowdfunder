@@ -6,6 +6,13 @@
 <p>Funding End Date: {{project.funding_end_date}}</p>
 <p>Time Remaining: {{project.funding_deadline}} day(s)</p>
 <p>Total funding: ${{ project.total_funds }} of ${{ project.goal }}</p>
+<p>Category: <a href="{% url 'category_show' category_id=project.category.pk %}">{{project.category.name}}</a></p>
+<p>Tags:</p>
+<ul>
+  {% for tag in project.tags.all %}
+  <li><a href="{% url 'tag_show' tag_id=tag.pk %}">{{ tag.name }}</a></li>
+  {% endfor %}
+</ul>
 <p>Status: {{project.status}}</p>
 <p>Owner: <a href="{% url 'profile_viewer' id=project.owner.profile.pk %}">{{ project.owner.profile.first_name }}</a></p>
 {% if request.user == project.owner %}
